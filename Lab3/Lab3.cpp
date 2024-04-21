@@ -178,38 +178,38 @@ int List::count() const
 	return size;
 }
 
-void List::insertBeforeNegative()
+void List:: insertBeforeNegative() 
 {
 	if (size == 0) return;
+
 	Node* current = tail->next;
 	Node* prev = tail;
-	bool updatedCache = false;
-	do {
-		if (current->data < 0)
+	int currentIndex = 0;
+
+	do 
+	{
+		if (current->data < 0) 
 		{
 			Node* newNode = new Node(1);
 			newNode->next = current;
 			prev->next = newNode;
+			if (current == tail->next) tail = newNode;
 			size++;
-
-			if (current == tail->next)
+			if (currentIndex < cachedIndex) 
 			{
-				tail->next = newNode;
+				cachedIndex++;
 			}
-			if (!updatedCache) {
+			else if (currentIndex == cachedIndex) 
+			{
 				cachedNode = newNode;
-				cachedIndex = 0;
-				updatedCache = true;
 			}
-			prev = newNode;
 		}
-		else
-		{
-			prev = current;
-		}
+		prev = current;
 		current = current->next;
+		currentIndex++;
 	} while (current != tail->next);
 }
+
 
 void List:: removeNegative() 
 {
