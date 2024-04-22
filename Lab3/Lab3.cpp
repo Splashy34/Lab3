@@ -109,10 +109,6 @@ void List::insert(int index, int data)
 		}
 		newnode->next = prev->next;
 		prev->next = newnode;
-		if (index == 0)
-		{
-			tail->next = newnode;
-		}
 		if (index == size)
 		{
 			tail = newnode;
@@ -137,30 +133,36 @@ void List::removeAt(int index)
 		cachedIndex = -1;
 		return;
 	}
-	Node* prev = getNode(index - 1);
-	Node* todel = prev->next;
-	if (index == 0) 
+	Node* prev;
+	Node* todel;
+	if (index == 0)
 	{
 		prev = tail;
 		todel = tail->next;
-		tail->next = todel->next; 
+		tail->next = todel->next;
+		if (tail == todel) tail = nullptr;
 	}
-	prev->next = todel->next;
-	if (todel == tail) 
+	else
 	{
-		tail = prev; 
+		prev = getNode(index - 1);
+		todel = prev->next;
+		prev->next = todel->next;
 	}
-	if (cachedNode == todel || cachedIndex >= index)
+	if (todel == tail)
 	{
-		cachedNode = nullptr; 
+		tail = prev;
+	}
+	if (cachedNode == todel)
+	{
+		cachedNode = nullptr;
 		cachedIndex = -1;
 	}
-	delete todel; 
-	size--;
-	if (cachedIndex > index) 
+	else if (cachedIndex > index)
 	{
 		cachedIndex--;
 	}
+	delete todel;
+	size--;
 }
 
 int List::elementAt(int index)
@@ -193,7 +195,7 @@ void List:: insertBeforeNegative()
 			Node* newNode = new Node(1);
 			newNode->next = current;
 			prev->next = newNode;
-			if (current == tail->next) tail = newNode;
+			if (current == tail->next) tail->next = newNode;
 			size++;
 			if (currentIndex < cachedIndex) 
 			{
