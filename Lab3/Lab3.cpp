@@ -192,10 +192,17 @@ void List:: insertBeforeNegative()
 	{
 		if (current->data < 0) 
 		{
-			Node* newNode = new Node(1);
-			newNode->next = current;
-			prev->next = newNode;
-			if (current == tail->next) tail->next = newNode;
+			Node* newnode = new Node(1);
+			if (current == tail->next)
+			{
+				newnode->next = tail->next;
+				tail->next = newnode;
+			}
+			else
+			{
+				newnode->next = current;
+				prev->next = newnode;
+			}
 			size++;
 			if (currentIndex < cachedIndex) 
 			{
@@ -203,7 +210,7 @@ void List:: insertBeforeNegative()
 			}
 			else if (currentIndex == cachedIndex) 
 			{
-				cachedNode = newNode;
+				cachedNode = newnode;
 			}
 		}
 		prev = current;
