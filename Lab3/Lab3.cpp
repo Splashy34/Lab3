@@ -32,15 +32,14 @@ private:
 	{
 		Node* current;
 		int start;
-
 		if (index == 0)
 		{
 			return tail->next;
 		}
-		if (cachedIndex >= 0 && index > cachedIndex)
+		if (cachedIndex >= 0 && index >= cachedIndex)
 		{
-			current = cachedNode->next;
-			start = cachedIndex + 1;
+			current = cachedNode;
+			start = cachedIndex;
 		}
 		else
 		{
@@ -154,8 +153,8 @@ void List::removeAt(int index)
 	}
 	if (cachedNode == todel)
 	{
-		cachedNode = nullptr;
-		cachedIndex = -1;
+		cachedNode = prev;
+		cachedIndex--;
 	}
 	else if (cachedIndex > index)
 	{
