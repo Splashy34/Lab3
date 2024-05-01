@@ -170,8 +170,14 @@ int List::elementAt(int index)
 	{
 		return -1;
 	}
-	Node* node = getNode(index);
-	return node->data;
+	index = index % size;
+	if (cachedIndex != index)
+	{
+		Node* node = getNode(index);
+		cachedNode = node;
+		cachedIndex = index;
+	}
+	return cachedNode->data;
 }
 
 int List::count() const
